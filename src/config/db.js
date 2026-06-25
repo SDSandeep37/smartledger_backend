@@ -21,7 +21,7 @@ export async function initialiseDatabaseTable() {
   await dbPool.query(`
       CREATE TABLE IF NOT EXISTS companies(
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-      user_id VARCHAR(255) NOT NULL,
+      user_id UUID NOT NULL,
       company_name VARCHAR(150) NOT NULL,
       address TEXT,
       city VARCHAR(80),

@@ -2,6 +2,8 @@ import validate from "validator";
 
 //function for email validation
 export function emailValidator(email) {
+  if (!email) return false;
+
   return validate.isEmail(email);
 }
 
@@ -39,4 +41,12 @@ export function alphabetValidator(value) {
 
   const regex = /^[A-Za-z]+$/;
   return regex.test(value);
+}
+
+export function phoneValidator(phone) {
+  if (!phone) return false;
+
+  return validate.isMobilePhone(phone, "en-IN", {
+    strictMode: true,
+  });
 }

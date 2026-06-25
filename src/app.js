@@ -28,7 +28,9 @@ app.use(cookieParser());
 
 // Routes
 import userRoutes from "./routes/userRoutes.js";
+import companyRoutes from "./routes/companyRoutes.js";
 
 app.use("/smartledger/user", userRoutes);
+app.use("/smartledger/company", companyRoutes);
 
 export default app;
