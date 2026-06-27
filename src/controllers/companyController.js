@@ -53,6 +53,7 @@ export async function updateCompany(request, response) {
       message: "Company identity is required",
     });
   }
+
   try {
     const company = await CompanyModel.update(
       companyId,
@@ -164,5 +165,30 @@ export async function deleteCompanyContoller(request, response) {
       success: false,
       message: "Failed to deleting company.",
     });
+  }
+}
+
+export async function searchCompaniesController(request, response) {
+  if (!request.params) {
+    return response.status(400).json({
+      success: false,
+      message: "Company name required",
+    });
+  }
+
+  const company_name = request.query.companyName.trim();
+
+  try {
+    const searchResult = await CompanyModel.serachCompanyByName(company_name);
+    return response.json({
+      success: true,
+      message: "List of all the companies",
+      company: searchResult,
+    });
+  } catch (error) {
+    console.error("Error fetching companies:", error);
+    response
+      .status(500)
+      .json({ success: false, message: "Internal server error" });
   }
 }

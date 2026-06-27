@@ -6,6 +6,7 @@ import {
   deleteCompanyContoller,
   getCompaniesOfUserContoller,
   getCompanyContoller,
+  searchCompaniesController,
   updateCompany,
 } from "../controllers/companyController.js";
 
@@ -16,5 +17,6 @@ router.put("/:companyId/update", verifyToken, validateCompany, updateCompany);
 router.get("/:companyId/company", verifyToken, getCompanyContoller);
 router.get("/companies", verifyToken, getCompaniesOfUserContoller);
 router.delete("/:companyId", verifyToken, deleteCompanyContoller);
+router.get("/search", verifyToken, searchCompaniesController);
 
 export default router;

@@ -120,8 +120,8 @@ class CompanyModel {
         userId,
       ];
       const result = await dbPool.query(query, values);
-      const updateCompany = result.rows[0];
-      return updateCompany;
+      const updatedCompany = result.rows[0];
+      return updatedCompany;
     } catch (error) {
       throw error;
     }
@@ -183,6 +183,25 @@ class CompanyModel {
       );
       return Number(result.rows[0].count);
     } catch (error) {
+      throw error;
+    }
+  }
+
+  static async serachCompanyByName(company_name) {
+    try {
+      const companyPattern = `%${company_name}%`;
+
+      const result = await dbPool.query(
+        `
+      SELECT id,company_name FROM companies
+      WHERE  company_name ILIKE $1
+      LIMIT 10
+    `,
+        [companyPattern],
+      );
+      return result.rows;
+    } catch (error) {
+      console.error("Database query failed:", error);
       throw error;
     }
   }

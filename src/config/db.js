@@ -1,5 +1,11 @@
 import { Pool } from "pg";
 
+import pg from "pg";
+const { types } = pg;
+// OID 1082 = DATE
+types.setTypeParser(1082, (value) => value);
+//to fix 2026-06-25T18:30:00.000Z to 2026-06-25
+
 //create a connection pool to the database
 export const dbPool = new Pool({
   connectionString: process.env.DATABASE_URL,
