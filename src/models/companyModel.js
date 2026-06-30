@@ -2,7 +2,7 @@ import { dbPool } from "../config/db.js";
 
 class CompanyModel {
   //create company function
-  static async create(companyDetails) {
+  static async create(connection, companyDetails) {
     const {
       user_id,
       company_name,
@@ -56,7 +56,7 @@ class CompanyModel {
         phone,
         email,
       ];
-      const result = await dbPool.query(query, values);
+      const result = await connection.query(query, values);
       const company = result.rows[0];
       delete company.created_at;
       delete company.updated_at;

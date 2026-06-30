@@ -47,5 +47,36 @@ export async function initialiseDatabaseTable() {
       ON DELETE CASCADE
       )
     `);
+  await dbPool.query(`
+      CREATE TABLE IF NOT EXISTS ledger_groups (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      company_id UUID NOT NULL,
+      group_name VARCHAR(100) NOT NULL,
+      nature VARCHAR(30) NOT NULL CHECK (
+        nature IN (
+            'Assets',
+            'Liabilities',
+            'Income',
+            'Expenses'
+        )
+      ),
+      parent_group_id UUID NULL,
+      is_system BOOLEAN DEFAULT FALSE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT fk_company
+        FOREIGN KEY (company_id)
+        REFERENCES companies(id)
+        ON DELETE CASCADE,
+
+      CONSTRAINT fk_parent_group
+        FOREIGN KEY (parent_group_id)
+        REFERENCES ledger_groups(id)
+        ON DELETE SET NULL,
+
+      CONSTRAINT unique_group_per_company
+        UNIQUE(company_id, group_name)
+      )
+    `);
   console.log("Database tables initialized successfully");
 }

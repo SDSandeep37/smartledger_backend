@@ -3,6 +3,11 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import path from "path";
 
+// function capitalizeFirstLetter(str) {
+//   if (!str) return ""; // handle empty string
+//   return str.charAt(0).toUpperCase() + str.slice(1);
+// }
+
 const app = express();
 
 const allowedOrigins = ["http://localhost:5173"];
@@ -29,8 +34,10 @@ app.use(cookieParser());
 // Routes
 import userRoutes from "./routes/userRoutes.js";
 import companyRoutes from "./routes/companyRoutes.js";
+import ledgerGroupRoutes from "./routes/ledgerGroupRoutes.js";
 
 app.use("/smartledger/user", userRoutes);
 app.use("/smartledger/company", companyRoutes);
+app.use("/smartledger/ledger-group", ledgerGroupRoutes);
 
 export default app;

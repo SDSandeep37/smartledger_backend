@@ -1,4 +1,5 @@
 import CompanyModel from "../models/companyModel.js";
+import CompanyService from "../services/companyService.js";
 
 export async function createCompany(request, response) {
   if (!request.user) {
@@ -17,7 +18,7 @@ export async function createCompany(request, response) {
     });
   }
   try {
-    const company = await CompanyModel.create({
+    const company = await CompanyService.createCompany({
       ...request.body,
       user_id,
     });
