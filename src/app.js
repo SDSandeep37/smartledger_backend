@@ -35,9 +35,11 @@ app.use(cookieParser());
 import userRoutes from "./routes/userRoutes.js";
 import companyRoutes from "./routes/companyRoutes.js";
 import ledgerGroupRoutes from "./routes/ledgerGroupRoutes.js";
+import ledgerRoutes from "./routes/ledgerRoutes.js";
 
 app.use("/smartledger/user", userRoutes);
 app.use("/smartledger/company", companyRoutes);
 app.use("/smartledger/ledger-group", ledgerGroupRoutes);
+app.use("/smartledger/ledger", ledgerRoutes);
 
 export default app;

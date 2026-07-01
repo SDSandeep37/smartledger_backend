@@ -40,12 +40,12 @@ const DEFAULT_LEDGER_GROUPS = [
     parent_group: "Liabilities",
   },
   {
-    group_name: "Sales Account",
+    group_name: "Sales Accounts",
     nature: "Income",
     parent_group: "Income",
   },
   {
-    group_name: "Purchase Account",
+    group_name: "Purchase Accounts",
     nature: "Expenses",
     parent_group: "Expenses",
   },

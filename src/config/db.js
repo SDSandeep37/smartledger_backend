@@ -78,5 +78,38 @@ export async function initialiseDatabaseTable() {
         UNIQUE(company_id, group_name)
       )
     `);
+  await dbPool.query(`
+      CREATE TABLE IF NOT EXISTS ledgers (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      company_id UUID NOT NULL,
+      group_id UUID NOT NULL,
+      ledger_name VARCHAR(150) NOT NULL,
+      alias_name VARCHAR(150),
+      opening_balance NUMERIC(15,2) DEFAULT 0,
+      balance_type VARCHAR(2)
+        CHECK(balance_type IN ('Dr','Cr')),
+      gst_number VARCHAR(20),
+      pan_number VARCHAR(20),
+      phone VARCHAR(20),
+      email VARCHAR(120),
+      address TEXT,
+      is_system BOOLEAN DEFAULT FALSE,
+      is_active BOOLEAN DEFAULT TRUE,
+      notes TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT fk_company
+        FOREIGN KEY(company_id)
+        REFERENCES companies(id)
+        ON DELETE CASCADE,
+
+      CONSTRAINT fk_group
+        FOREIGN KEY(group_id)
+        REFERENCES ledger_groups(id),
+
+      CONSTRAINT unique_ledger_name
+        UNIQUE(company_id, ledger_name)
+      )
+    `);
   console.log("Database tables initialized successfully");
 }

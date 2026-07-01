@@ -1,6 +1,7 @@
 import { dbPool } from "../config/db.js";
 import CompanyModel from "../models/companyModel.js";
 import LedgerGroupModel from "../models/ledgerGroupModel.js";
+import LedgersModel from "../models/ledgersModel.js";
 
 class CompanyService {
   //create company with default ledger group
@@ -11,6 +12,8 @@ class CompanyService {
 
       const company = await CompanyModel.create(connection, data);
       await LedgerGroupModel.seedDefaultGroups(connection, company.id);
+
+      await LedgersModel.seedDefaultLedgers(connection, company.id);
 
       await connection.query("COMMIT");
 
