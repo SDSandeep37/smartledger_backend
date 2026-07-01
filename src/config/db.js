@@ -111,5 +111,19 @@ export async function initialiseDatabaseTable() {
         UNIQUE(company_id, ledger_name)
       )
     `);
+  await dbPool.query(`
+    CREATE TABLE IF NOT EXISTS units (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        company_id UUID NOT NULL,
+        unit_name VARCHAR(100) NOT NULL,
+        unit_symbol VARCHAR(20) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+        FOREIGN KEY(company_id)
+        REFERENCES companies(id)
+        ON DELETE CASCADE
+      )  
+    `);
   console.log("Database tables initialized successfully");
 }
