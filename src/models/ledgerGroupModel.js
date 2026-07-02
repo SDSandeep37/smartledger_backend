@@ -29,10 +29,12 @@ class LedgerGroupModel {
   //get all the ledger group exist for a company
   static async getAllByCompanyId(companyId) {
     const query = `
-      SELECT *
-      FROM ledger_groups
-      WHERE company_id=$1
-      ORDER BY group_name;
+      SELECT ledger_groups.*,pg.group_name AS parent_group
+      FROM ledger_groups 
+      LEFT JOIN ledger_groups pg
+      ON ledger_groups.parent_group_id = pg.id
+      WHERE ledger_groups.company_id=$1
+      ORDER BY ledger_groups.group_name;
     `;
     try {
       const { rows } = await dbPool.query(query, [companyId]);

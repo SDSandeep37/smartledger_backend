@@ -26,11 +26,11 @@ export const validateLedgerGroup = (request, response, next) => {
       message: "Ledger nature required",
     });
   }
-  if (!parent_group_id) {
-    return response.status(400).json({
-      success: false,
-      message: "Ledger parent group id required",
-    });
-  }
+  // if (!parent_group_id) {
+  //   return response.status(400).json({
+  //     success: false,
+  //     message: "Ledger parent group id required",
+  //   });
+  // }
   next();
 };
