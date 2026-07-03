@@ -37,11 +37,13 @@ import companyRoutes from "./routes/companyRoutes.js";
 import ledgerGroupRoutes from "./routes/ledgerGroupRoutes.js";
 import ledgerRoutes from "./routes/ledgerRoutes.js";
 import unitRoutes from "./routes/unitRoutes.js";
+import stockGroupRoutes from "./routes/stockGroupRoutes.js";
 
 app.use("/smartledger/user", userRoutes);
 app.use("/smartledger/company", companyRoutes);
 app.use("/smartledger/ledger-group", ledgerGroupRoutes);
 app.use("/smartledger/ledger", ledgerRoutes);
 app.use("/smartledger/unit", unitRoutes);
+app.use("/smartledger/stock-group", stockGroupRoutes);
 
 export default app;

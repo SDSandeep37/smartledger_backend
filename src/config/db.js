@@ -125,5 +125,25 @@ export async function initialiseDatabaseTable() {
         ON DELETE CASCADE
       )  
     `);
+  await dbPool.query(`
+    CREATE TABLE IF NOT EXISTS stock_groups (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      company_id UUID NOT NULL,
+      group_name VARCHAR(100) NOT NULL,
+      parent_group_id UUID NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY(company_id)
+        REFERENCES companies(id)
+        ON DELETE CASCADE,
+
+      FOREIGN KEY(parent_group_id)
+        REFERENCES stock_groups(id)
+        ON DELETE SET NULL,
+      CONSTRAINT unique_stock_group
+      UNIQUE(company_id, group_name)
+        
+      )  
+    `);
   console.log("Database tables initialized successfully");
 }
