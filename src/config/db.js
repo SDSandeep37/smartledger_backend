@@ -145,5 +145,35 @@ export async function initialiseDatabaseTable() {
         
       )  
     `);
+  await dbPool.query(`
+    CREATE TABLE IF NOT EXISTS stock_items (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      company_id UUID NOT NULL,
+      stock_group_id UUID NOT NULL,
+      unit_id UUID NOT NULL,
+      item_name VARCHAR(150) NOT NULL,
+      sku VARCHAR(100),
+      purchase_price NUMERIC(15,2) DEFAULT 0,
+      selling_price NUMERIC(15,2) DEFAULT 0,
+      opening_stock NUMERIC(15,2) DEFAULT 0,
+      minimum_stock NUMERIC(15,2) DEFAULT 0,
+      current_stock NUMERIC(15,2) DEFAULT 0,
+      gst_percent NUMERIC(5,2) DEFAULT 0,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY(company_id)
+        REFERENCES companies(id)
+        ON DELETE CASCADE,
+
+      FOREIGN KEY(stock_group_id)
+          REFERENCES stock_groups(id),
+
+      FOREIGN KEY(unit_id)
+          REFERENCES units(id),
+      CONSTRAINT unique_sku_per_company
+      UNIQUE(company_id, sku)
+        
+      )  
+    `);
   console.log("Database tables initialized successfully");
 }
