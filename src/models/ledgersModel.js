@@ -184,6 +184,36 @@ class LedgersModel {
       throw error;
     }
   }
+
+  static async getPurchaseLedger(connection, companyId) {
+    const { rows } = await connection.query(
+      `
+    SELECT *
+    FROM ledgers
+    WHERE company_id = $1
+      AND ledger_name = 'Purchases'
+    LIMIT 1;
+    `,
+      [companyId],
+    );
+
+    return rows[0];
+  }
+
+  static async getSalesLedger(connection, companyId) {
+    const { rows } = await connection.query(
+      `
+    SELECT *
+    FROM ledgers
+    WHERE company_id = $1
+      AND ledger_name = 'Sales'
+    LIMIT 1;
+    `,
+      [companyId],
+    );
+
+    return rows[0];
+  }
 }
 
 export default LedgersModel;

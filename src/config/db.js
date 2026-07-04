@@ -275,5 +275,22 @@ export async function initialiseDatabaseTable() {
         REFERENCES stock_items(id)
       )  
     `);
+  await dbPool.query(`
+    CREATE TABLE IF NOT EXISTS voucher_entries  (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      voucher_id UUID NOT NULL,
+      ledger_id UUID NOT NULL,
+      debit NUMERIC(15,2) DEFAULT 0,
+      credit NUMERIC(15,2) DEFAULT 0,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY(voucher_id)
+          REFERENCES vouchers(id)
+          ON DELETE CASCADE,
+
+      FOREIGN KEY(ledger_id)
+          REFERENCES ledgers(id)
+        )  
+    `);
   console.log("Database tables initialized successfully");
 }

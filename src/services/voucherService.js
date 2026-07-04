@@ -4,6 +4,8 @@ import VoucherModel from "../models/voucherModel.js";
 import VoucherItemModel from "../models/voucherItemModel.js";
 import VoucherSequenceModel from "../models/voucherSequenceModel.js";
 import StockItemsModel from "../models/stockItemsModel.js";
+import VoucherEntryModel from "../models/voucherEntriesModel.js";
+import LedgersModel from "../models/ledgersModel.js";
 
 const VOUCHER_PREFIX = {
   Purchase: "PUR",
@@ -135,7 +137,58 @@ class VoucherService {
           stockChange,
         );
       }
+      // Create Ledger Entries
+      if (voucher_type === "Purchase") {
+        const purchaseLedger = await LedgersModel.getPurchaseLedger(
+          connection,
+          company_id,
+        );
 
+        if (!purchaseLedger) {
+          throw new Error("Purchase Account ledger not found.");
+        }
+
+        // Purchase Account Dr
+        await VoucherEntryModel.create(connection, {
+          voucher_id: voucher.id,
+          ledger_id: purchaseLedger.id,
+          debit: voucherTotal,
+          credit: 0,
+        });
+
+        // Supplier Cr
+        await VoucherEntryModel.create(connection, {
+          voucher_id: voucher.id,
+          ledger_id: party_ledger_id,
+          debit: 0,
+          credit: voucherTotal,
+        });
+      } else {
+        const salesLedger = await LedgersModel.getSalesLedger(
+          connection,
+          company_id,
+        );
+
+        if (!salesLedger) {
+          throw new Error("Sales Account ledger not found.");
+        }
+
+        // Customer Dr
+        await VoucherEntryModel.create(connection, {
+          voucher_id: voucher.id,
+          ledger_id: party_ledger_id,
+          debit: voucherTotal,
+          credit: 0,
+        });
+
+        // Sales Account Cr
+        await VoucherEntryModel.create(connection, {
+          voucher_id: voucher.id,
+          ledger_id: salesLedger.id,
+          debit: 0,
+          credit: voucherTotal,
+        });
+      }
       await connection.query("COMMIT");
 
       return voucher;
