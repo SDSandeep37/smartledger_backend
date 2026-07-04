@@ -199,7 +199,11 @@ class StockItemsModel {
   }
 
   //increase stock item current stock by id
-  static async increaseStockItemCurrentStock(stockItemId, quantity) {
+  static async increaseStockItemCurrentStock(
+    connection,
+    stockItemId,
+    quantity,
+  ) {
     try {
       const query = `
       UPDATE stock_items
@@ -208,7 +212,7 @@ class StockItemsModel {
       RETURNING *;
     `;
       const values = [stockItemId, quantity];
-      const result = await dbPool.query(query, values);
+      const result = await connection.query(query, values);
       return result.rows[0];
     } catch (error) {
       console.error("Error increasing stock item current stock:", error);
@@ -216,7 +220,11 @@ class StockItemsModel {
     }
   }
   //decrease stock item current stock by id
-  static async decreaseStockItemCurrentStock(stockItemId, quantity) {
+  static async decreaseStockItemCurrentStock(
+    connection,
+    stockItemId,
+    quantity,
+  ) {
     try {
       const query = `
       UPDATE stock_items
@@ -225,7 +233,7 @@ class StockItemsModel {
       RETURNING *;
     `;
       const values = [stockItemId, quantity];
-      const result = await dbPool.query(query, values);
+      const result = await connection.query(query, values);
       return result.rows[0];
     } catch (error) {
       console.error("Error decreasing stock item current stock:", error);
@@ -233,12 +241,17 @@ class StockItemsModel {
     }
   }
   //one funtion to update stock item current stock by id and quantity (positive or negative)
-  static async updateStockItemCurrentStock(stockItemId, quantity) {
+  static async updateStockItemCurrentStock(connection, stockItemId, quantity) {
     try {
       if (quantity > 0) {
-        return await this.increaseStockItemCurrentStock(stockItemId, quantity);
+        return await this.increaseStockItemCurrentStock(
+          connection,
+          stockItemId,
+          quantity,
+        );
       } else {
         return await this.decreaseStockItemCurrentStock(
+          connection,
           stockItemId,
           Math.abs(quantity),
         );

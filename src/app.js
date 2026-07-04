@@ -39,6 +39,7 @@ import ledgerRoutes from "./routes/ledgerRoutes.js";
 import unitRoutes from "./routes/unitRoutes.js";
 import stockGroupRoutes from "./routes/stockGroupRoutes.js";
 import stockItemsRoutes from "./routes/stockItemsRoutes.js";
+import voucherRoutes from "./routes/voucherRoutes.js";
 
 app.use("/smartledger/user", userRoutes);
 app.use("/smartledger/company", companyRoutes);
@@ -47,5 +48,6 @@ app.use("/smartledger/ledger", ledgerRoutes);
 app.use("/smartledger/unit", unitRoutes);
 app.use("/smartledger/stock-group", stockGroupRoutes);
 app.use("/smartledger/stock-item", stockItemsRoutes);
+app.use("/smartledger/voucher", voucherRoutes);
 
 export default app;
