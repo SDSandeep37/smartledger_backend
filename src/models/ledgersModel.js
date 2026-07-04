@@ -214,6 +214,38 @@ class LedgersModel {
 
     return rows[0];
   }
+  // search ledger by name
+  static async searchLedger(companyId, searchTerm) {
+    try {
+      const query = `
+       SELECT
+          id,
+          ledger_name
+      FROM ledgers
+      WHERE company_id = $1
+      AND ledger_name ILIKE $2
+      LIMIT 10;
+    `;
+      const values = [companyId, `%${searchTerm}%`];
+      const result = await dbPool.query(query, values);
+      return result.rows;
+    } catch (error) {
+      console.error("Error searching leagers:", error);
+      throw error;
+    }
+  }
+  /* SELECT
+    id,
+    ledger_name
+FROM ledgers
+WHERE company_id = $1
+AND ledger_name ILIKE $2
+AND group_id IN (
+    SELECT id
+    FROM ledger_groups
+    WHERE group_name IN ('Sundry Creditors','Sundry Debtors')
+)
+LIMIT 10; */
 }
 
 export default LedgersModel;

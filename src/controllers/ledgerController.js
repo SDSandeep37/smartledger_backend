@@ -124,3 +124,25 @@ export async function deleteLedgerById(request, response) {
     });
   }
 }
+
+//search ledger by name
+export async function searchLedgerController(request, response) {
+  const { companyId } = request.params;
+  const { keyword } = request.query;
+
+  try {
+    const items = await LedgersModel.searchLedger(companyId, keyword);
+
+    return response.json({
+      success: true,
+      ledgers: items,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return response.status(500).json({
+      success: false,
+      message: "Failed to search ledgers.",
+    });
+  }
+}

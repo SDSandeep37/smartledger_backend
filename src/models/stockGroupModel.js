@@ -44,7 +44,13 @@ class StockGroupModel {
     try {
       const result = await dbPool.query(
         `
-        SELECT * FROM stock_groups WHERE company_id = $1;
+        SELECT 
+        sg.*,
+        pg.group_name AS parent_group_name
+        FROM stock_groups sg
+        LEFT JOIN  stock_groups pg
+        ON sg.parent_group_id = pg.id
+        WHERE sg.company_id = $1;
         `,
         [companyId],
       );
