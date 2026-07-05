@@ -4,6 +4,7 @@ class StockGroupModel {
   //create stock group
   static async create(stockGroupDetails) {
     const { company_id, group_name, parent_group_id } = stockGroupDetails;
+    console.log(stockGroupDetails);
     try {
       const query = `INSERT INTO stock_groups (company_id, group_name, parent_group_id)
        VALUES ($1,$2,$3) RETURNING *;`;
